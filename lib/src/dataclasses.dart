@@ -295,13 +295,15 @@ bool equals(a, b) {
 }
 
 bool isJsonSafe(a) => a == null || a is num || a is String || a is bool;
+
 jsonify(thing) {
   try {
     return thing.toMap();
   } on NoSuchMethodError {
     if (isJsonSafe(thing)) {
       return thing;
-    } else if (thing is Iterable && !isMap(thing)) {
+    }
+    else if (thing is Iterable && !isMap(thing)) {
       return nestedJsonList(thing);
     } //todo expand types
     else if (thing is Iterable) {
@@ -327,35 +329,13 @@ Map nestedJsonMap(mapLikeThing) {
   Map m = {};
   var key;
   var value;
+
   for (MapEntry mapEntry in mapLikeThing.entries) {
-    if (isJsonSafe(mapEntry.key)) {
-      key = mapEntry.key;
-    } else {
-      try {
-        key = mapEntry.key.toMap();
-      } on NoSuchMethodError {
-        throw Exception(
-            'Error on handling ${mapEntry.key} since ${mapEntry.key.runtimeType} '
-            'is not a base class or does not have a toJson() method');
-      }
-    }
-    if (isJsonSafe(mapEntry.value)) {
-      value = mapEntry.value;
-    } else {
-      try {
-        value = mapEntry.value.toMap();
-      } on NoSuchMethodError {
-        if (mapEntry.value is Iterable) {
-          value = nestedJsonList(mapEntry.value);
-        } else {
-          throw Exception(
-              'Error on handling ${mapEntry.value} since ${mapEntry.value.runtimeType} '
-              'is not a base class or does not have a toJson() method');
-        }
-      }
-    }
+    key = jsonify(mapEntry.key);
+    value = jsonify(mapEntry.value);
     m[key] = value;
   }
+
   return m;
 }
 //</editor-fold>
