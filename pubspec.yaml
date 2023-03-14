@@ -1,0 +1,20 @@
+name: dataclasses
+description: A sample command-line application.
+version: 0.0.1
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: '>=2.19.3 <3.0.0'
+
+dependencies:
+  collection: ^1.17.1
+  ari_utils:
+    git:
+      url: https://github.com/SimpleTheory/ari_utils_dart.git
+      ref: master
+  # Alternatively, you can use the version from pub.dev:
+  # ari_utils: ^1.8.0
+
+dev_dependencies:
+  lints: ^2.0.1
+  test: ^1.23.1
