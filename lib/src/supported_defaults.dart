@@ -553,7 +553,6 @@ List<SupportedDefaults> supportedDefaults = [
   ), // URI
   // For non-collection types above add Extension methods manually!!
 ];
-
 Map<String, SupportedDefaults> string2defaults = {for (SupportedDefaults o in supportedDefaults) o.name: o};
 Map<Type, SupportedDefaults> type2defaults = {for (SupportedDefaults o in supportedDefaults) o.referenceType.referenceType!: o};
 

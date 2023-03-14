@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'dart:convert';
-import 'package:ari_utils/ari_utils.dart';
 import 'package:collection/collection.dart';
+import 'package:ari_utils/ari_utils.dart';
 /// Things to do in Metadata
 ///   - Map ReflectedClasses to types (+swap)
 ///   - List of all reflected types
@@ -193,7 +193,6 @@ class ReflectedType{
     this.referenceType,
     // this.generics,
   }){nullable = typeString.endsWith('?');}
-  var x = ReflectedType.new;
 
   ReflectedType.create(this.referenceType, this.typeString)
   {nullable = typeString.endsWith('?');}
@@ -203,9 +202,9 @@ class ReflectedClass with SupportedClasses{
   String name;
   ReflectedType referenceType;
   Annotation dataclassAnnotation;
-  List<Attribute> attributes;
-  late Map<String, Method> methods; //[]
-  late List<Getter> getters; //[]
+  late Map<String, Attribute> attributes;
+  // late Map<String, Method> methods; //[]
+  late Map<String, Getter> getters; //[]
   // Mixin and Implements to be implemented later
   Type? parent; // Maybe ReflectedType?
 
@@ -218,23 +217,45 @@ class ReflectedClass with SupportedClasses{
               entry.value.methodType == MethodType.namedConstructor ||
               entry.value.referencedMethod != null
       ).map((entry) => MapEntry(entry.key, entry.value.referencedMethod!)));
-  Map<String, Attribute> get staticAttributes =>
-      {for (Attribute attr in (attributes.where((element) => element.static_))) attr.name: attr};
-  Map<String, Getter> get staticGetter =>
-      {for (Getter gettr in (getters.where((element) => element.static_))) gettr.name: gettr};
-  Map<String, dynamic> get statics => {...staticAttributes, ...staticsFactories};
+  Map<String, Attribute> get staticAttributes => attributes.where((p0) => p0.value.static_);
+  Map<String, Getter> get staticGetter => getters.where((p0) => p0.value.static_);
+  Map<String, dynamic> get statics => {...staticAttributes, ...staticsFactories, ...staticAttributes};
 
 ReflectedClass({
     required this.name,
     required this.referenceType,
     required this.dataclassAnnotation,
-    required this.attributes,
+    required List<Attribute> attributes,
     required List<Method> methods,
-    required this.getters,
+    required List<Getter> getters,
     this.parent,
 }){
   this.methods = {for (Method method in methods) method.name : method};
+  this.attributes = {for (Attribute attribute in attributes) attribute.name : attribute};
+  this.getters = {for (Getter getter in getters) getter.name : getter};
 }
+}
+class EnumExtension with SupportedClasses{
+  String name;
+  ReflectedType referenceType;
+  List<String> options;
+
+  EnumExtension({
+    required List<Method> methods,
+    required this.name,
+    required this.referenceType,
+    required this.options,
+  }){
+    this.methods = {for (Method method in methods) method.name : method};
+    if (this.methods['fromMap'] != null && this.methods['fromJson'] == null){
+      this.methods['fromJson'] = Method(
+          name: 'fromJson', methodType: MethodType.factory,
+          static_: false, external_: false,
+          referencedMethod: (String json)=>fromMap!(jsonDecode(json))
+      );
+    }
+  }
+
 }
 
 //</editor-fold>
@@ -343,19 +364,25 @@ Map nestedJsonMap(mapLikeThing) {
 class SupportedDefaults with SupportedClasses{
   String name;
   ReflectedType referenceType;
-  List<Attribute>? attributes;
-  List<Getter>? getters;
-  late Map<String, Method> methods;
+  late Map<String, Attribute>? attributes;
+  late Map<String, Getter>? getters;
+  // late Map<String, Method> methods;
   Type? parent;
 
   SupportedDefaults({
     required this.name,
     required this.referenceType,
-    this.getters,
-    this.attributes,
+    List<Getter>? getters,
+    List<Attribute>? attributes,
     required List<Method> methods,
     this.parent
-  }){this.methods = {for (Method method in methods) method.name : method};}
+  }){
+    this.methods = {for (Method method in methods) method.name : method};
+    if (attributes != null){
+      this.attributes = {for (Attribute attribute in attributes) attribute.name : attribute};}
+    if (getters != null){
+      this.getters = {for (Getter getter in getters) getter.name : getter};}
+  }
 }
 
 extension DateTimeJson on DateTime {
