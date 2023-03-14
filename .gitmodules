@@ -1,0 +1,3 @@
+[submodule "dart-dataclasses-engine"]
+	path = dart-dataclasses-engine
+	url = https://github.com/SimpleTheory/dart-dataclasses-engine
