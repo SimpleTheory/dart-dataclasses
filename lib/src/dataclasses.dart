@@ -209,6 +209,10 @@ class ReflectedClass with SupportedClasses{
   Type? parent; // Maybe ReflectedType?
 
   // Reflection Stuff
+  List<Type>? mixins;
+  List<Type>? implementations;
+
+
   Map<String, Function> get staticsFactories =>
       Map.fromEntries(methods.entries.where(
               (entry) =>
@@ -229,6 +233,8 @@ ReflectedClass({
     required List<Method> methods,
     required List<Getter> getters,
     this.parent,
+    this.mixins,
+    this.implementations
 }){
   this.methods = {for (Method method in methods) method.name : method};
   this.attributes = {for (Attribute attribute in attributes) attribute.name : attribute};
