@@ -1,7 +1,7 @@
-name: dataclasses
-description: A sample command-line application.
+name: dart_dataclasses
+description: Wrapper for a dataclass and reflection code generator.
 version: 0.0.1
-# repository: https://github.com/my_org/my_repo
+# repository: https://github.com/SimpleTheory/dart-dataclasses
 
 environment:
   sdk: '>=2.19.3 <3.0.0'
