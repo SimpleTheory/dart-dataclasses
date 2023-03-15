@@ -1,4 +1,4 @@
-name: dart_dataclasses
+name: dataclasses
 description: Wrapper for a dataclass and reflection code generator.
 version: 0.0.1
 # repository: https://github.com/SimpleTheory/dart-dataclasses
