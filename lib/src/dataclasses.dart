@@ -239,7 +239,21 @@ class ReflectedClass with SupportedClasses{
   Map<String, Getter> get staticGetter => getters.where((p0) => p0.value.static_);
   Map<String, dynamic> get statics => {...staticAttributes, ...staticsFactories, ...staticAttributes};
 
-ReflectedClass({
+
+  @override
+  String toString() {
+    return 'ReflectedClass{name: $name,'
+        ' methods: ${methods.keys.toList()},'
+        ' attributes: ${attributes.keys.toList()},'
+        ' getters: ${getters.keys.toList()},'
+        ' parent: $parent,'
+        ' mixins: $mixins,'
+        ' implementations: $implementations,'
+        ' dataclassAnnotation: $dataclassAnnotation'
+        '}';
+  }
+
+  ReflectedClass({
     required this.name,
     required this.referenceType,
     required this.dataclassAnnotation,
