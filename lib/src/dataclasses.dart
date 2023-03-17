@@ -74,6 +74,14 @@ class Super {
 
   const Super(this.param);
 }
+class FromMapOverride{
+  final Type type;
+  const FromMapOverride(this.type);
+}
+class ToMapOverride{
+  final Type type;
+  const ToMapOverride(this.type);
+}
 //</editor-fold>
 
 // <editor-fold desc="Reflected Meta-classes from Python">
@@ -285,7 +293,7 @@ bool isMap(i) =>
 bool equals(a, b) {
   DeepCollectionEquality deepEquality = const DeepCollectionEquality();
   if (a.runtimeType == b.runtimeType) {
-    if (a is Iterable
+    if (a is Iterable || isMap(a)
         // a is List
         //     || a is Set
         //     || a is Map

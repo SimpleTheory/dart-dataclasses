@@ -44,8 +44,6 @@ class Person {
 
   Person copyWithPerson(Address? address, List<Person>? family, String? name) => Person(address: address ?? this.address, family: family ?? this.family, name: name ?? this.name);
 
-  String toJson()=>jsonEncode(toMap());
-  Map<String, dynamic> toMap()=> {'__type': 'Person', ...nestedJsonMap(attributes__)};
 
   factory Person.fromJson(String json) => Person.fromMap(jsonDecode(json));
 
@@ -123,4 +121,5 @@ void main() {
         }),
       ]);
   print(refEnum.methods['fromJson']?.name);
+  print(Letters.a.toMap());
 }
