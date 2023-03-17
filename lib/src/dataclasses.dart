@@ -105,6 +105,11 @@ class Annotation {
   });
 
   Annotation.create(this.name, this.positionalParam, this.keywordParam);
+
+  @override
+  String toString() {
+    return 'Annotation{name: $name, positionalParam: $positionalParam, keywordParam: $keywordParam}';
+  }
 }
 class Attribute {
   String name;
