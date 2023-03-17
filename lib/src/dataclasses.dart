@@ -14,7 +14,7 @@ abstract class AbstractDataclass{
   bool operator ==(Object other);
   copyWith();
   Map<String, dynamic> get $attributes;
-  toMap() => {'__type:': runtimeType, ...nestedJsonMap($attributes)};
+  toMap(){throw UnimplementedError();}
   toJson() => jsonEncode($attributes);
   factory AbstractDataclass.fromJson(String json)=>AbstractDataclass.fromMap(jsonDecode(json));
   factory AbstractDataclass.fromMap(Map<String, dynamic> map) {
@@ -25,7 +25,13 @@ abstract class AbstractDataclass{
 
 mixin SupportedClasses{
   late Map<String, Method> methods;
+
   Function? get fromMap => methods['fromMap']?.referencedMethod;
+  Function? get fromJson => methods['fromJson']?.referencedMethod;
+
+  Function? get toMap => methods['toMap']?.referencedMethod;
+  Function? get toJson => methods['toJson']?.referencedMethod;
+
   Function? get staticConstructor => methods['staticConstructor']?.referencedMethod;
 }
 
@@ -302,48 +308,32 @@ bool equals(a, b) {
 
 bool isJsonSafe(a) => a == null || a is num || a is String || a is bool;
 
-jsonify(thing) {
-  try {
-    return thing.toMap();
-  } on NoSuchMethodError {
-    if (isJsonSafe(thing)) {
-      return thing;
-    }
-    else if (thing is Iterable && !isMap(thing)) {
-      return nestedJsonList(thing);
-    } //todo expand types
-    else if (thing is Iterable) {
-      return nestedJsonMap(thing);
-    } //todo expand types and add nested map function
-    // add more conditions?
-    else {
-      throw Exception('Error on handling $thing since ${thing.runtimeType} '
-          'is not a base class or does not have a toJson() method');
-    }
+Map? supportedTypeToMap(supportedType){
+  if (supportedType is Enum){
+    return supportedType.toMap();
   }
+    if (supportedType is DateTime){
+    return supportedType.toMap();
+  }
+    if (supportedType is Duration){
+    return supportedType.toMap();
+  }
+    if (supportedType is RegExp){
+    return supportedType.toMap();
+  }
+    if (supportedType is Uri){
+    return supportedType.toMap();
+  }
+    if (supportedType is BigInt){
+    return supportedType.toMap();
+  }
+    if (supportedType is Enum){
+    return supportedType.toMap();
+  }
+    return null;
+
 }
 
-List nestedJsonList(Iterable iter) {
-  List l = [];
-  for (var thing in iter) {
-    l.add(jsonify(thing));
-  }
-  return l;
-}
-
-Map nestedJsonMap(mapLikeThing) {
-  Map m = {};
-  var key;
-  var value;
-
-  for (MapEntry mapEntry in mapLikeThing.entries) {
-    key = jsonify(mapEntry.key);
-    value = jsonify(mapEntry.value);
-    m[key] = value;
-  }
-
-  return m;
-}
 //</editor-fold>
 
 // <editor-fold desc="JSON Extensions">
