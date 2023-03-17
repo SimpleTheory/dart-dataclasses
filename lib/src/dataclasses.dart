@@ -56,7 +56,7 @@ class Dataclass {
       this.staticConstructor
       });
 }
-class Metaclass {const Metaclass();}
+// class Metaclass {const Metaclass();}
 class Generate{
   const Generate();
 }
