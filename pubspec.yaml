@@ -8,12 +8,7 @@ environment:
 
 dependencies:
   collection: ^1.17.0
-  ari_utils:
-    git:
-      url: https://github.com/SimpleTheory/ari_utils_dart.git
-      ref: master
-  # Alternatively, you can use the version from pub.dev:
-  # ari_utils: ^1.8.0
+  ari_utils: ^0.0.3
 
 dev_dependencies:
   lints: ^2.0.1
