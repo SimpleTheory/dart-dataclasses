@@ -46,6 +46,7 @@ class Dataclass {
   final bool? all;
   final String? superFactory;
   final String? staticConstructor;
+  final bool? abstractParent;
   final bool? constructor;
 
   // final bool
@@ -59,7 +60,8 @@ class Dataclass {
       this.all,
       this.superFactory,
       this.constructor,
-      this.staticConstructor
+      this.staticConstructor,
+      this.abstractParent,
       });
 }
 // class Metaclass {const Metaclass();}
