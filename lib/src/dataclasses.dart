@@ -45,7 +45,7 @@ class Dataclass {
   final bool? copyWith;
   final bool? all;
   final String? superFactory;
-  final String? staticConstructor;
+  final bool? staticConstructor;
   final bool? abstractParent;
   final bool? constructor;
 
@@ -83,6 +83,10 @@ class FromMapOverride{
 class ToMapOverride{
   final Type type;
   const ToMapOverride(this.type);
+}
+class StaticConstructorOverride{
+  final Type type;
+  const StaticConstructorOverride(this.type);
 }
 //</editor-fold>
 
@@ -298,6 +302,16 @@ class EnumExtension with SupportedClasses{
   }
 
 }
+class ClassOverrides with SupportedClasses{
+  late String name;
+  ReflectedType referenceType;
+  ClassOverrides({required this.name, required this.referenceType, required methods})
+    {this.methods = methods;}
+  ClassOverrides.create(this.referenceType, List<Method> methods)
+    {this.methods = {for (Method e in methods) e.name: e};
+     name = referenceType.referenceType!.toString();
+    }
+}
 
 //</editor-fold>
 
@@ -361,6 +375,11 @@ Map? supportedTypeToMap(supportedType){
   }
     return null;
 
+}
+
+
+Function? toMapOverride(object, Map<Type, ClassOverrides> map) {
+  return map[object.runtimeType]?.toJson;
 }
 
 //</editor-fold>
