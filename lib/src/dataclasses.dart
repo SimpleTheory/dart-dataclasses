@@ -90,13 +90,13 @@ class StaticConstructorOverride{
 }
 class CreateTests{
   final Type cls;
-  final Object reference;
+  final String reference;
 
   const CreateTests(this.cls, this.reference);
 }
 class CreateTestTemplates{
   final Type cls;
-  final Object reference;
+  final String reference;
 
   const CreateTestTemplates(this.cls, this.reference);
 }
