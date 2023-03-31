@@ -88,6 +88,18 @@ class StaticConstructorOverride{
   final Type type;
   const StaticConstructorOverride(this.type);
 }
+class CreateTests{
+  final Type cls;
+  final Object reference;
+
+  const CreateTests(this.cls, this.reference);
+}
+class CreateTestTemplates{
+  final Type cls;
+  final Object reference;
+
+  const CreateTestTemplates(this.cls, this.reference);
+}
 //</editor-fold>
 
 // <editor-fold desc="Reflected Meta-classes from Python">
