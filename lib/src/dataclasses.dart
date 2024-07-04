@@ -28,9 +28,13 @@ mixin SupportedClasses{
 
   Function? get fromMap => methods['fromMap']?.referencedMethod;
   Function? get fromJson => methods['fromJson']?.referencedMethod;
+  Function? get fromApi => methods['fromApi']?.referencedMethod;
+  Function? get fromApiMap => methods['fromApiMap']?.referencedMethod;
 
   Function? get toMap => methods['toMap']?.referencedMethod;
   Function? get toJson => methods['toJson']?.referencedMethod;
+  Function? get toApi => methods['toApi']?.referencedMethod;
+  Function? get toApiMap => methods['toApiMap']?.referencedMethod;
 
   Function? get staticConstructor => methods['staticConstructor']?.referencedMethod;
 }
@@ -40,6 +44,9 @@ class Dataclass {
   final bool? eq;
   final bool? toJson;
   final bool? fromJson;
+  final bool? toApi;
+  final bool? toApiMap;
+  final bool? fromApi;
   final bool? attributes;
   final bool? toStr;
   final bool? copyWith;
@@ -54,6 +61,9 @@ class Dataclass {
       {this.eq,
       this.toJson,
       this.fromJson,
+      this.toApi,
+      this.fromApi,
+      this.toApiMap,
       this.attributes,
       this.toStr,
       this.copyWith,
@@ -389,9 +399,33 @@ Map? supportedTypeToMap(supportedType){
 
 }
 
-
 Function? toMapOverride(object, Map<Type, ClassOverrides> map) {
   return map[object.runtimeType]?.toJson;
+}
+
+Map<String, dynamic> removeTypeKey(Map map) {
+  Map<String, dynamic> newMap = {};
+
+  map.forEach((key, value) {
+    if (key != '__type') {
+      if (value is Map<String, dynamic>) {
+        newMap[key] = removeTypeKey(value);
+      }
+      else if (value is List) {
+        newMap[key] = value.map((element) {
+          if (element is Map<String, dynamic>) {
+            return removeTypeKey(element);
+          }
+          return element;
+        }).toList();
+      }
+      else {
+        newMap[key] = value;
+      }
+    }
+  });
+
+  return newMap;
 }
 
 //</editor-fold>
