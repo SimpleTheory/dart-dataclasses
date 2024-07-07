@@ -7,7 +7,7 @@ environment:
   sdk: '>=2.19.3 <3.0.0'
 
 dependencies:
-  collection: ^1.19.0
+  collection: ^1.18.0
   ari_utils: ^0.0.4
 
 dev_dependencies:
